@@ -93,10 +93,10 @@ class fatJetUncertaintiesProducer(Module):
             self.genSubJetBranchName = None
             self.doGroomed = False
         elif "AK8" in jetType:
-            self.jetBranchName = "FatJetNoVlep"
-            self.subJetBranchName = "SubJetNoVlep"
-            self.genJetBranchName = "GenJetAK8NoVlep"
-            self.genSubJetBranchName = "SubGenJetAK8NoVlep"
+            self.jetBranchName = "FatJet"
+            self.subJetBranchName = "SubJet"
+            self.genJetBranchName = "GenJetAK8"
+            self.genSubJetBranchName = "SubGenJetAK8"
             if not self.noGroom:
                 self.doGroomed = True
                 self.puppiCorrFile = ROOT.TFile.Open(

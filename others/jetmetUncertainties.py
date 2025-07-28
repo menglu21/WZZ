@@ -83,10 +83,8 @@ class jetmetUncertaintiesProducer(Module):
                                      self.jerUncertaintyInputFileName)
 
         if "AK4" in jetType:
-            self.jetBranchName = "JetNoVlep"
-            self.genJetBranchName = "GenJetNoVlep"
-            #self.jetBranchName = "Jet"
-            #self.genJetBranchName = "GenJet"
+            self.jetBranchName = "Jet"
+            self.genJetBranchName = "GenJet"
             self.genSubJetBranchName = None
         else:
             raise ValueError("ERROR: Invalid jet type = '%s'!" % jetType)
