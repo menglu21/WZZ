@@ -137,7 +137,7 @@ def w_v4(lep_v4, MET, MET_phi):
 
 def assign_jets_from_many(jets):
   assert len(jets) >= 4
-  best_score = 10000.
+  best_score = float('inf')
   best_combo = None
   for jet_indices in combinations(range(len(jets)), 4):
     selected_jets = [jets[i] for i in jet_indices]
@@ -169,7 +169,7 @@ def assign_jets_from_many(jets):
 def assign_2jets_from_many(jets,mass):
   assert len(jets) >= 2
   mass_boson=mass
-  best_score = 10000.
+  best_score = float('inf')
   best_combo = None
   for jet_indices in combinations(range(len(jets)), 2):
     selected_jets = [jets[i] for i in jet_indices]
@@ -251,7 +251,7 @@ def assign_4lep(l1v4,l2v4,l3v4,l4v4,l1charge,l2charge,l3charge,l4charge,l1id,l2i
      
 def assign_5lep(l1,l2,l3,l4,l5):
   leptons=[l1,l2,l3,l4,l5]
-  best_cost = 10000
+  best_cost = float('inf')
   best_combo = None
 
   z_pairs = []
@@ -705,11 +705,11 @@ class WZZProducer(Module):
 
       if pass_mu_dr>0 and pass_ele_dr>0 and pass_jet_dr>0:
         TightJet_id.append(ijet)
-        TightJet_v4.append(jet_v4_temp)
-        TightJet_pt.append(jet_v4_temp.Pt())
-        TightJet_eta.append(jet_v4_temp.Eta())
-        TightJet_phi.append(jet_v4_temp.Phi())
-        TightJet_mass.append(jet_v4_temp.M())
+        TightJet_v4.append(jet_v4_temp.Clone())
+        TightJet_pt.append(jet_v4_temp.Clone().Pt())
+        TightJet_eta.append(jet_v4_temp.Clone().Eta())
+        TightJet_phi.append(jet_v4_temp.Clone().Phi())
+        TightJet_mass.append(jet_v4_temp.Clone().M())
 
     self.out.fillBranch("TightJet_id", TightJet_id)
     self.out.fillBranch("TightJet_pt", TightJet_pt)
@@ -1128,7 +1128,7 @@ class WZZProducer(Module):
           l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
           l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
           l3_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          zl1_v4,zl2_v4,wl_v4,SR3L_zl1_id,SR3L_zl2_id,SR3L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[TMuons_id[2]].charge,TMuons_id[0],TMuons_id[1],FMuons_id[0])
+          zl1_v4,zl2_v4,wl_v4,SR3L_zl1_id,SR3L_zl2_id,SR3L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[FMuons_id[0]].charge,TMuons_id[0],TMuons_id[1],FMuons_id[0])
           if SR3L_zl1_id==FMuons_id[0]:
             SR_3L_FakeBit=6
           elif SR3L_zl2_id==FMuons_id[0]:
@@ -3250,6 +3250,8 @@ class WZZProducer(Module):
     self.out.fillBranch("SR5L_wzz_eta", SR5L_wzz_eta)
     self.out.fillBranch("SR5L_wzz_phi", SR5L_wzz_phi)
     self.out.fillBranch("SR5L_wzz_mass", SR5L_wzz_mass)
+
+    return True
 
 WZZ2016apvMC = lambda: WZZProducer("2016apv",'MC')
 WZZ2016apvB = lambda: WZZProducer("2016apv",'B')
