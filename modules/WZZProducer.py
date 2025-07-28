@@ -357,6 +357,7 @@ class WZZProducer(Module):
     self.out.branch("SR2L_wjj_eta","F")
     self.out.branch("SR2L_wjj_phi","F")
     self.out.branch("SR2L_wjj_mass","F")
+    self.out.branch("SR2L_dR_l1l2","F")
     self.out.branch("SR2L_dR_zll_wjj","F")
     self.out.branch("SR2L_dEta_zll_wjj","F")
     self.out.branch("SR2L_dPhi_zll_wjj","F")
@@ -422,6 +423,9 @@ class WZZProducer(Module):
     self.out.branch("SR3L_zjj_eta","F")
     self.out.branch("SR3L_zjj_phi","F")
     self.out.branch("SR3L_zjj_mass","F")
+    self.out.branch("SR3L_dR_zl1zl2","F")
+    self.out.branch("SR3L_dR_zl1wl","F")
+    self.out.branch("SR3L_dR_zl2wl","F")
     self.out.branch("SR3L_dR_zll_wlv","F")
     self.out.branch("SR3L_dEta_zll_wlv","F")
     self.out.branch("SR3L_dPhi_zll_wlv","F")
@@ -493,6 +497,12 @@ class WZZProducer(Module):
     self.out.branch("SR4L_wjj_eta","F")
     self.out.branch("SR4L_wjj_phi","F")
     self.out.branch("SR4L_wjj_mass","F")
+    self.out.branch("SR4L_dR_z1l1z1l2","F")
+    self.out.branch("SR4L_dR_z1l1z2l1","F")
+    self.out.branch("SR4L_dR_z1l1z2l2","F")
+    self.out.branch("SR4L_dR_z1l2z2l1","F")
+    self.out.branch("SR4L_dR_z1l2z2l2","F")
+    self.out.branch("SR4L_dR_z2l1z2l2","F")
     self.out.branch("SR4L_dR_z1_wjj","F")
     self.out.branch("SR4L_dEta_z1_wjj","F")
     self.out.branch("SR4L_dPhi_z1_wjj","F")
@@ -559,6 +569,16 @@ class WZZProducer(Module):
     self.out.branch("SR5L_w_eta","F")
     self.out.branch("SR5L_w_phi","F")
     self.out.branch("SR5L_w_mass","F")
+    self.out.branch("SR5L_dR_z1l1z1l2","F")
+    self.out.branch("SR5L_dR_z1l1z2l1","F")
+    self.out.branch("SR5L_dR_z1l1z2l2","F")
+    self.out.branch("SR5L_dR_z1l1wl","F")
+    self.out.branch("SR5L_dR_z1l2z2l1","F")
+    self.out.branch("SR5L_dR_z1l2z2l2","F")
+    self.out.branch("SR5L_dR_z1l2wl","F")
+    self.out.branch("SR5L_dR_z2l1z2l2","F")
+    self.out.branch("SR5L_dR_z2l1wl","F")
+    self.out.branch("SR5L_dR_z2l2wl","F")
     self.out.branch("SR5L_dR_z1_w","F")
     self.out.branch("SR5L_dEta_z1_w","F")
     self.out.branch("SR5L_dPhi_z1_w","F")
@@ -774,6 +794,7 @@ class WZZProducer(Module):
     SR2L_wjj_eta=-99
     SR2L_wjj_phi=-99
     SR2L_wjj_mass=-99
+    SR2L_dR_l1l2 = -99
     SR2L_dR_zll_wjj = -99
     SR2L_dEta_zll_wjj =-99
     SR2L_dPhi_zll_wjj =-99
@@ -868,6 +889,7 @@ class WZZProducer(Module):
         SR2L_zll_mass=(l1_v4+l2_v4).M()
 
       zll_v4=l1_v4+l2_v4
+      SR2L_dR_l1l2=l1_v4.DeltaR(l2_v4)
 
       best_combo = assign_jets_from_many(TightJet_v4)
       w_j1, w_j2=best_combo['W_pair']
@@ -974,6 +996,7 @@ class WZZProducer(Module):
     self.out.fillBranch("SR2L_wjj_eta", SR2L_wjj_eta)
     self.out.fillBranch("SR2L_wjj_phi", SR2L_wjj_phi)
     self.out.fillBranch("SR2L_wjj_mass", SR2L_wjj_mass)
+    self.out.fillBranch("SR2L_dR_l1l2", SR2L_dR_l1l2)
     self.out.fillBranch("SR2L_dR_zll_wjj", SR2L_dR_zll_wjj)
     self.out.fillBranch("SR2L_dEta_zll_wjj", SR2L_dEta_zll_wjj)
     self.out.fillBranch("SR2L_dPhi_zll_wjj", SR2L_dPhi_zll_wjj)
@@ -1056,6 +1079,9 @@ class WZZProducer(Module):
     SR3L_zjj_phi=-99
     SR3L_zjj_mass=-99
 
+    SR3L_dR_zl1zl2=-99
+    SR3L_dR_zl1wl=-99
+    SR3L_dR_zl2wl=-99
     SR3L_dR_zll_wlv = -99
     SR3L_dEta_zll_wlv = -99
     SR3L_dPhi_zll_wlv = -99
@@ -1087,6 +1113,9 @@ class WZZProducer(Module):
       l1_v4=TLorentzVector()
       l2_v4=TLorentzVector()
       l3_v4=TLorentzVector()
+      zl1_v4=TLorentzVector()
+      zl2_v4=TLorentzVector()
+      wl_v4==TLorentzVector()
       zll_v4=TLorentzVector()
       zjj_v4=TLorentzVector()
       wlv_v4=TLorentzVector()
@@ -1117,6 +1146,9 @@ class WZZProducer(Module):
         SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
         SR3L_zll_mass=(zl1_v4+zl2_v4).M()
         zll_v4=zl1_v4+zl2_v4
+        SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+        SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+        SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
 #        wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
         wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
       elif len(TMuons_id)==2:
@@ -1152,6 +1184,9 @@ class WZZProducer(Module):
           SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
           SR3L_zll_mass=(zl1_v4+zl2_v4).M()
           zll_v4=zl1_v4+zl2_v4
+          SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+          SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+          SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
           #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
           wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
         elif len(TElectrons_id)==1:
@@ -1182,6 +1217,9 @@ class WZZProducer(Module):
           SR3L_zll_phi=(l1_v4+l2_v4).Phi()
           SR3L_zll_mass=(l1_v4+l2_v4).M()
           zll_v4=l1_v4+l2_v4
+          SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+          SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+          SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
           #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
           wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
         elif len(FElectrons_id)==1:
@@ -1212,6 +1250,9 @@ class WZZProducer(Module):
           SR3L_zll_phi=(l1_v4+l2_v4).Phi()
           SR3L_zll_mass=(l1_v4+l2_v4).M()
           zll_v4=l1_v4+l2_v4
+          SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+          SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+          SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
           #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
           wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
       elif len(TMuons_id)==1:
@@ -1246,6 +1287,9 @@ class WZZProducer(Module):
           SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
           SR3L_zll_mass=(zl1_v4+zl2_v4).M()
           zll_v4=zl1_v4+zl2_v4
+          SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+          SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+          SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
           #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
           wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
         elif len(FMuons_id)==1:
@@ -1277,6 +1321,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
           else:
@@ -1304,6 +1351,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
         elif len(FMuons_id)==0:
@@ -1335,6 +1385,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
           elif len(TElectrons_id)==1:
@@ -1364,6 +1417,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
           else:
@@ -1393,6 +1449,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
       elif len(TMuons_id)==0:
@@ -1422,6 +1481,9 @@ class WZZProducer(Module):
           SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
           SR3L_zll_mass=(zl1_v4+zl2_v4).M()
           zll_v4=zl1_v4+zl2_v4
+          SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+          SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+          SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
           #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
           wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
         elif len(FMuons_id)==2:
@@ -1453,6 +1515,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
           else:
@@ -1480,6 +1545,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
         elif len(FMuons_id)==1:
@@ -1511,6 +1579,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
           elif len(TElectrons_id)==1:
@@ -1540,6 +1611,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
           else:
@@ -1569,6 +1643,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(l1_v4+l2_v4).Phi()
             SR3L_zll_mass=(l1_v4+l2_v4).M()
             zll_v4=l1_v4+l2_v4
+            SR3L_dR_zl1zl2=l1_v4.DeltaR(l2_v4)
+            SR3L_dR_zl1wl=l1_v4.DeltaR(l3_v4)
+            SR3L_dR_zl2wl=l2_v4.DeltaR(l3_v4)
             #wlv_v4=w_v4(l3_v4, met_user, met_phi_user)
             wlv_v4=w_v4(l3_v4, met_CorrePhi, met_phi_CorrePhi)
         else:
@@ -1598,6 +1675,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
             SR3L_zll_mass=(zl1_v4+zl2_v4).M()
             zll_v4=zl1_v4+zl2_v4
+            SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+            SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+            SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
             #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
             wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
           elif len(TElectrons_id)==2:
@@ -1630,6 +1710,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
             SR3L_zll_mass=(zl1_v4+zl2_v4).M()
             zll_v4=zl1_v4+zl2_v4
+            SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+            SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+            SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
             #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
             wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
           elif len(TElectrons_id)==1:
@@ -1662,6 +1745,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
             SR3L_zll_mass=(zl1_v4+zl2_v4).M()
             zll_v4=zl1_v4+zl2_v4
+            SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+            SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+            SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
             #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
             wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
           else:
@@ -1689,6 +1775,9 @@ class WZZProducer(Module):
             SR3L_zll_phi=(zl1_v4+zl2_v4).Phi()
             SR3L_zll_mass=(zl1_v4+zl2_v4).M()
             zll_v4=zl1_v4+zl2_v4
+            SR3L_dR_zl1zl2=zl1_v4.DeltaR(zl2_v4)
+            SR3L_dR_zl1wl=zl1_v4.DeltaR(wl_v4)
+            SR3L_dR_zl2wl=zl2_v4.DeltaR(wl_v4)
             #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
             wlv_v4=w_v4(wl_v4, met_CorrePhi, met_phi_CorrePhi)
 
@@ -1805,6 +1894,9 @@ class WZZProducer(Module):
     self.out.fillBranch("SR3L_wzz_eta", SR3L_wzz_eta)
     self.out.fillBranch("SR3L_wzz_phi", SR3L_wzz_phi)
     self.out.fillBranch("SR3L_wzz_mass", SR3L_wzz_mass)
+    self.out.fillBranch("SR3L_dR_zl1zl2", SR3L_dR_zl1zl2)
+    self.out.fillBranch("SR3L_dR_zl1wl", SR3L_dR_zl1wl)
+    self.out.fillBranch("SR3L_dR_zl2wl", SR3L_dR_zl2wl)
 
     # Four leptons channel
     # SR_4L_FlavorBit=52: 4mu, 
@@ -1859,6 +1951,12 @@ class WZZProducer(Module):
     SR4L_wjj_eta=-99
     SR4L_wjj_phi=-99
     SR4L_wjj_mass=-99
+    SR4L_dR_z1l1z1l2=-99
+    SR4L_dR_z1l1z2l1=-99
+    SR4L_dR_z1l1z2l2=-99
+    SR4L_dR_z1l2z2l1=-99
+    SR4L_dR_z1l2z2l2=-99
+    SR4L_dR_z2l1z2l2=-99
     SR4L_dR_z1_wjj = -99
     SR4L_dEta_z1_wjj =-99
     SR4L_dPhi_z1_wjj =-99
@@ -1892,6 +1990,10 @@ class WZZProducer(Module):
       l2_v4=TLorentzVector()
       l3_v4=TLorentzVector()
       l4_v4=TLorentzVector()
+      z1l1_v4=TLorentzVector()
+      z1l2_v4=TLorentzVector()
+      z2l1_v4=TLorentzVector()
+      z2l2_v4=TLorentzVector()
       z1_v4=TLorentzVector()
       z2_v4=TLorentzVector()
       wjj_v4=TLorentzVector()
@@ -1980,6 +2082,13 @@ class WZZProducer(Module):
         SR4L_z2l2_eta=z2l2_v4.Eta()
         SR4L_z2l2_phi=z2l2_v4.Phi()
         SR4L_z2l2_mass=z2l2_v4.M()
+
+        SR4L_dR_z1l1z1l2=z1l1_v4.DeltaR(z1l2_v4)
+        SR4L_dR_z1l1z2l1=z1l1_v4.DeltaR(z2l1_v4)
+        SR4L_dR_z1l1z2l2=z1l1_v4.DeltaR(z2l2_v4)
+        SR4L_dR_z1l2z2l1=z1l2_v4.DeltaR(z2l1_v4)
+        SR4L_dR_z1l2z2l2=z1l2_v4.DeltaR(z2l2_v4)
+        SR4L_dR_z2l1z2l2=z2l1_v4.DeltaR(z2l2_v4)
 
         SR4L_z1_pt=(z1l1_v4+z1l2_v4).Pt()
         SR4L_z1_eta=(z1l1_v4+z1l2_v4).Eta()
@@ -2143,6 +2252,13 @@ class WZZProducer(Module):
         SR4L_z2l2_phi=l4_v4.Phi()
         SR4L_z2l2_mass=l4_v4.M()
 
+        SR4L_dR_z1l1z1l2=l1_v4.DeltaR(l2_v4)
+        SR4L_dR_z1l1z2l1=l1_v4.DeltaR(l3_v4)
+        SR4L_dR_z1l1z2l2=l1_v4.DeltaR(l4_v4)
+        SR4L_dR_z1l2z2l1=l2_v4.DeltaR(l3_v4)
+        SR4L_dR_z1l2z2l2=l2_v4.DeltaR(l4_v4)
+        SR4L_dR_z2l1z2l2=l3_v4.DeltaR(l4_v4)
+
         SR4L_z1_pt=(l1_v4+l2_v4).Pt()
         SR4L_z1_eta=(l1_v4+l2_v4).Eta()
         SR4L_z1_phi=(l1_v4+l2_v4).Phi()
@@ -2237,6 +2353,13 @@ class WZZProducer(Module):
         SR4L_z2l2_eta=z2l2_v4.Eta()
         SR4L_z2l2_phi=z2l2_v4.Phi()
         SR4L_z2l2_mass=z2l2_v4.M()
+
+        SR4L_dR_z1l1z1l2=z1l1_v4.DeltaR(z1l2_v4)
+        SR4L_dR_z1l1z2l1=z1l1_v4.DeltaR(z2l1_v4)
+        SR4L_dR_z1l1z2l2=z1l1_v4.DeltaR(z2l2_v4)
+        SR4L_dR_z1l2z2l1=z1l2_v4.DeltaR(z2l1_v4)
+        SR4L_dR_z1l2z2l2=z1l2_v4.DeltaR(z2l2_v4)
+        SR4L_dR_z2l1z2l2=z2l1_v4.DeltaR(z2l2_v4)
 
         SR4L_z1_pt=(z1l1_v4+z1l2_v4).Pt()
         SR4L_z1_eta=(z1l1_v4+z1l2_v4).Eta()
@@ -2360,6 +2483,12 @@ class WZZProducer(Module):
     self.out.fillBranch("SR4L_wzz_eta", SR4L_wzz_eta)
     self.out.fillBranch("SR4L_wzz_phi", SR4L_wzz_phi)
     self.out.fillBranch("SR4L_wzz_mass", SR4L_wzz_mass)
+    self.out.fillBranch("SR4L_dR_z1l1z1l2", SR4L_dR_z1l1z1l2)
+    self.out.fillBranch("SR4L_dR_z1l1z2l1", SR4L_dR_z1l1z2l1)
+    self.out.fillBranch("SR4L_dR_z1l1z2l2", SR4L_dR_z1l1z2l2)
+    self.out.fillBranch("SR4L_dR_z1l2z2l1", SR4L_dR_z1l2z2l1)
+    self.out.fillBranch("SR4L_dR_z1l2z2l2", SR4L_dR_z1l2z2l2)
+    self.out.fillBranch("SR4L_dR_z2l1z2l2", SR4L_dR_z2l1z2l2)
 
 
     # l1 is z1l1, l2 is z1l2, l3 is z2l1, l4 is z2l2, l5 is wl
@@ -2404,6 +2533,16 @@ class WZZProducer(Module):
     SR5L_w_eta=-99
     SR5L_w_phi=-99
     SR5L_w_mass=-99
+    SR5L_dR_z1l1z1l2=-99
+    SR5L_dR_z1l1z2l1=-99
+    SR5L_dR_z1l1z2l2=-99
+    SR5L_dR_z1l1wl=-99
+    SR5L_dR_z1l2z2l1=-99
+    SR5L_dR_z1l2z2l2=-99
+    SR5L_dR_z1l2wl=-99
+    SR5L_dR_z2l1z2l2=-99
+    SR5L_dR_z2l1wl=-99
+    SR5L_dR_z2l2wl=-99
     SR5L_dR_z1_w = -99
     SR5L_dEta_z1_w =-99
     SR5L_dPhi_z1_w =-99
@@ -2436,6 +2575,10 @@ class WZZProducer(Module):
       l3_v4=TLorentzVector()
       l4_v4=TLorentzVector()
       l5_v4=TLorentzVector()
+      z1l1_v4=TLorentzVector()
+      z1l2_v4=TLorentzVector()
+      z2l1_v4=TLorentzVector()
+      z2l2_v4=TLorentzVector()
       z1_v4=TLorentzVector()
       z2_v4=TLorentzVector()
       wlv_v4=TLorentzVector()
@@ -2560,6 +2703,17 @@ class WZZProducer(Module):
         SR5L_wl_phi=wl.p4.Phi()
         SR5L_wl_mass=wl.p4.M()
         
+        SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+        SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
         z1_v4=z1l1.p4+z1l2.p4
         z2_v4=z2l1.p4+z2l2.p4
         #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
@@ -2662,6 +2816,17 @@ class WZZProducer(Module):
         SR5L_wl_phi=l5_v4.Phi()
         SR5L_wl_mass=l5_v4.M()
         
+        SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+        SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l1wl=z1l1.p4.DeltaR(l5_v4)
+        SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l2wl=z1l2.p4.DeltaR(l5.p4)
+        SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z2l1wl=z2l1.p4.DeltaR(l5_v4)
+        SR5L_dR_z2l2wl=z2l2.p4.DeltaR(l5_v4)
+
         z1_v4=z1l1_v4+z1l2_v4
         z2_v4=z2l1_v4+z2l2_v4
         #wlv_v4=w_v4(l5_v4, met_user, met_phi_user)
@@ -2710,10 +2875,10 @@ class WZZProducer(Module):
             chargeTotele_tmp=eles[FElectrons_id[0]].charge+eles[FElectrons_id[1]].charge
             if not abs(chargeTotele_tmp)==0:return False
             SR_5L_FakeBit=19
-            SR5L_z2l1_id=TElectrons_id[0]
-            SR5L_z2l2_id=FElectrons_id[0]
-            l4_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
-            l5_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
+            SR5L_z2l1_id=FElectrons_id[0]
+            SR5L_z2l2_id=FElectrons_id[1]
+            l4_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
+            l5_v4.SetPtEtaPhiM(eles[FElectrons_id[1]].pt,eles[FElectrons_id[1]].eta,eles[FElectrons_id[1]].phi,eles[FElectrons_id[1]].mass)
 
         elif len(TMuons_id)==2:
           chargeTotmu_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[FMuons_id[0]].charge
@@ -2784,6 +2949,17 @@ class WZZProducer(Module):
         SR5L_wl_phi=wl_v4.Phi()
         SR5L_wl_mass=wl_v4.M()
         
+        SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+        SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(l4_v4)
+        SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(l5_v4)
+        SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(l4_v4)
+        SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(l5_v4)
+        SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l1z2l2=l4_v4.DeltaR(l5_v4)
+        SR5L_dR_z2l1wl=l4_v4.DeltaR(wl.p4)
+        SR5L_dR_z2l2wl=l5_v4.DeltaR(wl.p4)
+
         z1_v4=z1l1_v4+z1l2_v4
         z2_v4=l4_v4+l5_v4
         #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
@@ -2903,6 +3079,17 @@ class WZZProducer(Module):
         SR5L_wl_phi=wl_v4.Phi()
         SR5L_wl_mass=wl_v4.M()
         
+        SR5L_dR_z1l1z1l2=l1_v4.DeltaR(l2_v4)
+        SR5L_dR_z1l1z2l1=l1_v4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l1z2l2=l1_v4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l1wl=l1_v4.DeltaR(wl.p4)
+        SR5L_dR_z1l2z2l1=l2_v4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l2z2l2=l2_v4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l2wl=l2_v4.DeltaR(wl.p4)
+        SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
         z1_v4=l1_v4+l2_v4
         z2_v4=z2l1_v4+z2l2_v4
         #wlv_v4=w_v4(wl_v4, met_user, met_phi_user)
@@ -3002,6 +3189,17 @@ class WZZProducer(Module):
         SR5L_wl_eta=l5_v4.Eta()
         SR5L_wl_phi=l5_v4.Phi()
         SR5L_wl_mass=l5_v4.M()
+
+        SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+        SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
         
         z1_v4=z1l1_v4+z1l2_v4
         z2_v4=z2l1_v4+z2l2_v4
@@ -3142,6 +3340,17 @@ class WZZProducer(Module):
         SR5L_wl_phi=wl.p4.Phi()
         SR5L_wl_mass=wl.p4.M()
         
+        SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+        SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+        SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+        SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+        SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
         z1_v4=z1l1.p4+z1l2.p4
         z2_v4=z2l1.p4+z2l2.p4
         #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
@@ -3250,6 +3459,16 @@ class WZZProducer(Module):
     self.out.fillBranch("SR5L_wzz_eta", SR5L_wzz_eta)
     self.out.fillBranch("SR5L_wzz_phi", SR5L_wzz_phi)
     self.out.fillBranch("SR5L_wzz_mass", SR5L_wzz_mass)
+    self.out.fillBranch("SR5L_dR_z1l1z1l2", SR5L_dR_z1l1z1l2)
+    self.out.fillBranch("SR5L_dR_z1l1z2l1", SR5L_dR_z1l1z2l1)
+    self.out.fillBranch("SR5L_dR_z1l1z2l2", SR5L_dR_z1l1z2l2)
+    self.out.fillBranch("SR5L_dR_z1l1wl", SR5L_dR_z1l1wl)
+    self.out.fillBranch("SR5L_dR_z1l2z2l1", SR5L_dR_z1l2z2l1)
+    self.out.fillBranch("SR5L_dR_z1l2z2l2", SR5L_dR_z1l2z2l2)
+    self.out.fillBranch("SR5L_dR_z1l2wl", SR5L_dR_z1l2wl)
+    self.out.fillBranch("SR5L_dR_z2l1z2l2", SR5L_dR_z2l1z2l2)
+    self.out.fillBranch("SR5L_dR_z2l1wl", SR5L_dR_z2l1wl)
+    self.out.fillBranch("SR5L_dR_z2l2wl", SR5L_dR_z2l2wl)
 
     return True
 
