@@ -121,15 +121,18 @@ def w_v4(lep_v4, MET, MET_phi):
   B=-4*a*pzl
   C=4*El*El*MET*MET - a*a
   tmproot = B * B - 4.0 * A * C
-  if tmproot<0:
-    pzv = -B / (2 * A)
+  if A==0:
+    pzv=0.
   else:
-    tmpsol1 = (-B + math.sqrt(tmproot)) / (2.0 * A)
-    tmpsol2 = (-B - math.sqrt(tmproot)) / (2.0 * A)
-    if abs(tmpsol1) < abs(tmpsol2):
-      pzv = tmpsol1
+    if tmproot<0:
+      pzv = -B / (2 * A)
     else:
-      pzv = tmpsol2
+      tmpsol1 = (-B + math.sqrt(tmproot)) / (2.0 * A)
+      tmpsol2 = (-B - math.sqrt(tmproot)) / (2.0 * A)
+      if abs(tmpsol1) < abs(tmpsol2):
+        pzv = tmpsol1
+      else:
+        pzv = tmpsol2
 
   vv4.SetPxPyPzE(pxv,pyv,pzv,math.sqrt(pxv*pxv+pyv*pyv+pzv*pzv))
   wv4=vv4+lep_v4
@@ -710,7 +713,7 @@ class WZZProducer(Module):
       for imu in range(0,len(TFMuons_id)):
         if pass_mu_dr<1:continue
         mid_tmp=TFMuons_id[imu]
-        lep_v4_temp.SetPtEtaPhiM(muons[mid_tmp].pt, muons[mid_tmp].eta, muons[mid_tmp].phi, muons[mid_tmp].mass)
+        lep_v4_temp.SetPtEtaPhiM(event.Muon_corrected_pt[mid_tmp], muons[mid_tmp].eta, muons[mid_tmp].phi, muons[mid_tmp].mass)
         if jet_v4_temp.DeltaR(lep_v4_temp)<0.4:pass_mu_dr=0
       
       for iele in range(0,len(TFElectrons_id)):
@@ -844,11 +847,11 @@ class WZZProducer(Module):
           SR_2L_FakeBit=0
           SR2L_l1_id=FMuons_id[0]
           SR2L_l2_id=FMuons_id[1]
-        SR2L_l1_pt=muons[SR2L_l1_id].pt
+        SR2L_l1_pt=event.Muon_corrected_pt[SR2L_l1_id]
         SR2L_l1_eta=muons[SR2L_l1_id].eta
         SR2L_l1_phi=muons[SR2L_l1_id].phi
         SR2L_l1_mass=muons[SR2L_l1_id].mass
-        SR2L_l2_pt=muons[SR2L_l2_id].pt
+        SR2L_l2_pt=event.Muon_corrected_pt[SR2L_l2_id]
         SR2L_l2_eta=muons[SR2L_l2_id].eta
         SR2L_l2_phi=muons[SR2L_l2_id].phi
         SR2L_l2_mass=muons[SR2L_l2_id].mass
@@ -1125,9 +1128,9 @@ class WZZProducer(Module):
         if not abs(chargeTot_tmp)==1:return False
         SR_3L_FlavorBit=39
         SR_3L_FakeBit=7
-        l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-        l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-        l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+        l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+        l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+        l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
         zl1_v4,zl2_v4,wl_v4,SR3L_zl1_id,SR3L_zl2_id,SR3L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[TMuons_id[2]].charge,TMuons_id[0],TMuons_id[1],TMuons_id[2])
         SR3L_zl1_pt=zl1_v4.Pt()
         SR3L_zl1_eta=zl1_v4.Eta()
@@ -1157,9 +1160,9 @@ class WZZProducer(Module):
           if not abs(chargeTot_tmp)==1:return False
           SR_3L_FlavorBit=39
 
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
           zl1_v4,zl2_v4,wl_v4,SR3L_zl1_id,SR3L_zl2_id,SR3L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[FMuons_id[0]].charge,TMuons_id[0],TMuons_id[1],FMuons_id[0])
           if SR3L_zl1_id==FMuons_id[0]:
             SR_3L_FakeBit=6
@@ -1197,11 +1200,11 @@ class WZZProducer(Module):
           SR3L_zl1_id=TMuons_id[0]
           SR3L_zl2_id=TMuons_id[1]
           SR3L_wl_id=TElectrons_id[0]
-          SR3L_zl1_pt=muons[TMuons_id[0]].pt
+          SR3L_zl1_pt=event.Muon_corrected_pt[TMuons_id[0]]
           SR3L_zl1_eta=muons[TMuons_id[0]].eta
           SR3L_zl1_phi=muons[TMuons_id[0]].phi
           SR3L_zl1_mass=muons[TMuons_id[0]].mass
-          SR3L_zl2_pt=muons[TMuons_id[1]].pt
+          SR3L_zl2_pt=event.Muon_corrected_pt[TMuons_id[1]]
           SR3L_zl2_eta=muons[TMuons_id[1]].eta
           SR3L_zl2_phi=muons[TMuons_id[1]].phi
           SR3L_zl2_mass=muons[TMuons_id[1]].mass
@@ -1230,11 +1233,11 @@ class WZZProducer(Module):
           SR3L_zl1_id=TMuons_id[0]
           SR3L_zl2_id=TMuons_id[1]
           SR3L_wl_id=FElectrons_id[0]
-          SR3L_zl1_pt=muons[TMuons_id[0]].pt
+          SR3L_zl1_pt=event.Muon_corrected_pt[TMuons_id[0]]
           SR3L_zl1_eta=muons[TMuons_id[0]].eta
           SR3L_zl1_phi=muons[TMuons_id[0]].phi
           SR3L_zl1_mass=muons[TMuons_id[0]].mass
-          SR3L_zl2_pt=muons[TMuons_id[1]].pt
+          SR3L_zl2_pt=event.Muon_corrected_pt[TMuons_id[1]]
           SR3L_zl2_eta=muons[TMuons_id[1]].eta
           SR3L_zl2_phi=muons[TMuons_id[1]].phi
           SR3L_zl2_mass=muons[TMuons_id[1]].mass
@@ -1260,9 +1263,9 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge
           if not abs(chargeTot_tmp)==1:return False
           SR_3L_FlavorBit=39
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
           zl1_v4,zl2_v4,wl_v4,SR3L_zl1_id,SR3L_zl2_id,SR3L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[FMuons_id[0]].charge,muons[FMuons_id[1]].charge,TMuons_id[0],FMuons_id[0],FMuons_id[1])
           if SR3L_zl1_id==TMuons_id[0]:
             SR_3L_FakeBit=1
@@ -1301,9 +1304,9 @@ class WZZProducer(Module):
             SR3L_zl1_id=TMuons_id[0]
             SR3L_zl2_id=FMuons_id[0]
             SR3L_wl_id=TElectrons_id[0]
-            l1_v4.SetPtEtaPhiM(muons[SR3L_zl1_id].pt,muons[SR3L_zl1_id].eta,muons[SR3L_zl1_id].phi,muons[SR3L_zl1_id].mass)
-            l2_v4.SetPtEtaPhiM(muons[SR3L_zl2_id].pt,muons[SR3L_zl2_id].eta,muons[SR3L_zl2_id].phi,muons[SR3L_zl2_id].mass)
-            l3_v4.SetPtEtaPhiM(eles[SR3L_wl_id].pt,eles[SR3L_wl_id].eta,eles[SR3L_wl_id].phi,eles[SR3L_wl_id].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_zl1_id], muons[SR3L_zl1_id].eta,muons[SR3L_zl1_id].phi,muons[SR3L_zl1_id].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_zl2_id], muons[SR3L_zl2_id].eta,muons[SR3L_zl2_id].phi,muons[SR3L_zl2_id].mass)
+            l3_v4.SetPtEtaPhiM(eles[SR3L_wl_id].pt, eles[SR3L_wl_id].eta,eles[SR3L_wl_id].phi,eles[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
             SR3L_zl1_phi=l1_v4.Phi()
@@ -1331,8 +1334,8 @@ class WZZProducer(Module):
             SR3L_zl1_id=TMuons_id[0]
             SR3L_zl2_id=FMuons_id[0]
             SR3L_wl_id=FElectrons_id[0]
-            l1_v4.SetPtEtaPhiM(muons[SR3L_zl1_id].pt,muons[SR3L_zl1_id].eta,muons[SR3L_zl1_id].phi,muons[SR3L_zl1_id].mass)
-            l2_v4.SetPtEtaPhiM(muons[SR3L_zl2_id].pt,muons[SR3L_zl2_id].eta,muons[SR3L_zl2_id].phi,muons[SR3L_zl2_id].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_zl1_id],muons[SR3L_zl1_id].eta,muons[SR3L_zl1_id].phi,muons[SR3L_zl1_id].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_zl2_id],muons[SR3L_zl2_id].eta,muons[SR3L_zl2_id].phi,muons[SR3L_zl2_id].mass)
             l3_v4.SetPtEtaPhiM(eles[SR3L_wl_id].pt,eles[SR3L_wl_id].eta,eles[SR3L_wl_id].phi,eles[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
@@ -1367,7 +1370,7 @@ class WZZProducer(Module):
             SR3L_wl_id=TMuons_id[0]
             l1_v4.SetPtEtaPhiM(eles[SR3L_zl1_id].pt,eles[SR3L_zl1_id].eta,eles[SR3L_zl1_id].phi,eles[SR3L_zl1_id].mass)
             l2_v4.SetPtEtaPhiM(eles[SR3L_zl2_id].pt,eles[SR3L_zl2_id].eta,eles[SR3L_zl2_id].phi,eles[SR3L_zl2_id].mass)
-            l3_v4.SetPtEtaPhiM(muons[SR3L_wl_id].pt,muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
+            l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_wl_id],muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
             SR3L_zl1_phi=l1_v4.Phi()
@@ -1399,7 +1402,7 @@ class WZZProducer(Module):
             SR3L_wl_id=TMuons_id[0]
             l1_v4.SetPtEtaPhiM(eles[SR3L_zl1_id].pt,eles[SR3L_zl1_id].eta,eles[SR3L_zl1_id].phi,eles[SR3L_zl1_id].mass)
             l2_v4.SetPtEtaPhiM(eles[SR3L_zl2_id].pt,eles[SR3L_zl2_id].eta,eles[SR3L_zl2_id].phi,eles[SR3L_zl2_id].mass)
-            l3_v4.SetPtEtaPhiM(muons[SR3L_wl_id].pt,muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
+            l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_wl_id],muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
             SR3L_zl1_phi=l1_v4.Phi()
@@ -1431,7 +1434,7 @@ class WZZProducer(Module):
             SR3L_wl_id=TMuons_id[0]
             l1_v4.SetPtEtaPhiM(eles[SR3L_zl1_id].pt,eles[SR3L_zl1_id].eta,eles[SR3L_zl1_id].phi,eles[SR3L_zl1_id].mass)
             l2_v4.SetPtEtaPhiM(eles[SR3L_zl2_id].pt,eles[SR3L_zl2_id].eta,eles[SR3L_zl2_id].phi,eles[SR3L_zl2_id].mass)
-            l3_v4.SetPtEtaPhiM(muons[SR3L_wl_id].pt,muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
+            l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_wl_id],muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
             SR3L_zl1_phi=l1_v4.Phi()
@@ -1460,9 +1463,9 @@ class WZZProducer(Module):
           if not abs(chargeTot_tmp)==1:return False
           SR_3L_FlavorBit=39
           SR_3L_FakeBit=0
-          l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[2]].pt,muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[2]],muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
           zl1_v4,zl2_v4,wl_v4,SR3L_zl1_id,SR3L_zl2_id,SR3L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[FMuons_id[0]].charge,muons[FMuons_id[1]].charge,muons[FMuons_id[2]].charge,FMuons_id[0],FMuons_id[1],FMuons_id[2])
           SR3L_zl1_pt=zl1_v4.Pt()
           SR3L_zl1_eta=zl1_v4.Eta()
@@ -1495,8 +1498,8 @@ class WZZProducer(Module):
             SR3L_zl2_id=FMuons_id[1]
             SR3L_wl_id=TElectrons_id[0]
             SR_3L_FakeBit=4
-            l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
@@ -1525,8 +1528,8 @@ class WZZProducer(Module):
             SR3L_zl1_id=FMuons_id[0]
             SR3L_zl2_id=FMuons_id[1]
             SR3L_wl_id=FElectrons_id[0]
-            l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
@@ -1561,7 +1564,7 @@ class WZZProducer(Module):
             SR3L_wl_id=FMuons_id[0]
             l1_v4.SetPtEtaPhiM(eles[SR3L_zl1_id].pt,eles[SR3L_zl1_id].eta,eles[SR3L_zl1_id].phi,eles[SR3L_zl1_id].mass)
             l2_v4.SetPtEtaPhiM(eles[SR3L_zl2_id].pt,eles[SR3L_zl2_id].eta,eles[SR3L_zl2_id].phi,eles[SR3L_zl2_id].mass)
-            l3_v4.SetPtEtaPhiM(muons[SR3L_wl_id].pt,muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
+            l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_wl_id],muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
             SR3L_zl1_phi=l1_v4.Phi()
@@ -1593,7 +1596,7 @@ class WZZProducer(Module):
             SR3L_wl_id=FMuons_id[0]
             l1_v4.SetPtEtaPhiM(eles[SR3L_zl1_id].pt,eles[SR3L_zl1_id].eta,eles[SR3L_zl1_id].phi,eles[SR3L_zl1_id].mass)
             l2_v4.SetPtEtaPhiM(eles[SR3L_zl2_id].pt,eles[SR3L_zl2_id].eta,eles[SR3L_zl2_id].phi,eles[SR3L_zl2_id].mass)
-            l3_v4.SetPtEtaPhiM(muons[SR3L_wl_id].pt,muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
+            l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_wl_id],muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
             SR3L_zl1_phi=l1_v4.Phi()
@@ -1625,7 +1628,7 @@ class WZZProducer(Module):
             SR3L_wl_id=FMuons_id[0]
             l1_v4.SetPtEtaPhiM(eles[SR3L_zl1_id].pt,eles[SR3L_zl1_id].eta,eles[SR3L_zl1_id].phi,eles[SR3L_zl1_id].mass)
             l2_v4.SetPtEtaPhiM(eles[SR3L_zl2_id].pt,eles[SR3L_zl2_id].eta,eles[SR3L_zl2_id].phi,eles[SR3L_zl2_id].mass)
-            l3_v4.SetPtEtaPhiM(muons[SR3L_wl_id].pt,muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
+            l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[SR3L_wl_id],muons[SR3L_wl_id].eta,muons[SR3L_wl_id].phi,muons[SR3L_wl_id].mass)
             SR3L_zl1_pt=l1_v4.Pt()
             SR3L_zl1_eta=l1_v4.Eta()
             SR3L_zl1_phi=l1_v4.Phi()
@@ -2004,20 +2007,20 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[TMuons_id[3]].charge
           if not abs(chargeTot_tmp)==0:return False
           SR_4L_FakeBit=15
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[TMuons_id[3]].pt,muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[3]],muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR4L_z1l1_id,SR4L_z1l2_id,SR4L_z2l1_id,SR4L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[TMuons_id[2]].charge,muons[TMuons_id[3]].charge,TMuons_id[0],TMuons_id[1],TMuons_id[2],TMuons_id[3])
 
 
         elif len(TMuons_id)==3:
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[FMuons_id[0]].charge
           if not abs(chargeTot_tmp)==0:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR4L_z1l1_id,SR4L_z1l2_id,SR4L_z2l1_id,SR4L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[TMuons_id[2]].charge,muons[FMuons_id[0]].charge,TMuons_id[0],TMuons_id[1],TMuons_id[2],FMuons_id[0])
           if SR4L_z1l1_id==FMuons_id[0]:
             SR_4L_FakeBit=14
@@ -2031,10 +2034,10 @@ class WZZProducer(Module):
         elif len(TMuons_id)==2:
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge
           if not abs(chargeTot_tmp)==0:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR4L_z1l1_id,SR4L_z1l2_id,SR4L_z2l1_id,SR4L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[FMuons_id[0]].charge,muons[FMuons_id[1]].charge,TMuons_id[0],TMuons_id[1],FMuons_id[0],FMuons_id[1])
           id_tmp=[SR4L_z2l2_id,SR4L_z2l1_id,SR4L_z1l2_id,SR4L_z1l1_id]
           real_index1=id_tmp.index(TMuons_id[0])
@@ -2044,10 +2047,10 @@ class WZZProducer(Module):
         elif len(TMuons_id)==1:
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge+muons[FMuons_id[2]].charge
           if not abs(chargeTot_tmp)==0:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[2]].pt,muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[2]],muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR4L_z1l1_id,SR4L_z1l2_id,SR4L_z2l1_id,SR4L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[TMuons_id[0]].charge,muons[FMuons_id[0]].charge,muons[FMuons_id[1]].charge,muons[FMuons_id[2]].charge,TMuons_id[0],FMuons_id[0],FMuons_id[1],FMuons_id[2])
           if SR4L_z1l1_id==TMuons_id[0]:
             SR_4L_FakeBit=1
@@ -2060,10 +2063,10 @@ class WZZProducer(Module):
         else:
           chargeTot_tmp=muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge+muons[FMuons_id[2]].charge+muons[FMuons_id[3]].charge
           if not abs(chargeTot_tmp)==0:return False
-          l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[2]].pt,muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[3]].pt,muons[FMuons_id[3]].eta,muons[FMuons_id[3]].phi,muons[FMuons_id[3]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[2]],muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[3]],muons[FMuons_id[3]].eta,muons[FMuons_id[3]].phi,muons[FMuons_id[3]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR4L_z1l1_id,SR4L_z1l2_id,SR4L_z2l1_id,SR4L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[FMuons_id[0]].charge,muons[FMuons_id[1]].charge,muons[FMuons_id[2]].charge,muons[FMuons_id[3]].charge,FMuons_id[0],FMuons_id[1],FMuons_id[2],FMuons_id[3])
 
         SR4L_z1l1_pt=z1l1_v4.Pt()
@@ -2116,8 +2119,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=TMuons_id[1]
             SR4L_z2l1_id=TElectrons_id[0]
             SR4L_z2l2_id=TElectrons_id[1]
-            l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[TElectrons_id[1]].pt,eles[TElectrons_id[1]].eta,eles[TElectrons_id[1]].phi,eles[TElectrons_id[1]].mass)
           elif len(TElectrons_id)==1:
@@ -2130,8 +2133,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=TMuons_id[1]
             SR4L_z2l1_id=TElectrons_id[0]
             SR4L_z2l2_id=FElectrons_id[0]
-            l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
           else:
@@ -2144,8 +2147,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=TMuons_id[1]
             SR4L_z2l1_id=FElectrons_id[0]
             SR4L_z2l2_id=FElectrons_id[1]
-            l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[FElectrons_id[1]].pt,eles[FElectrons_id[1]].eta,eles[FElectrons_id[1]].phi,eles[FElectrons_id[1]].mass)
         elif len(TMuons_id)==1:
@@ -2159,8 +2162,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=FMuons_id[0]
             SR4L_z2l1_id=TElectrons_id[0]
             SR4L_z2l2_id=TElectrons_id[1]
-            l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
             l3_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[TElectrons_id[1]].pt,eles[TElectrons_id[1]].eta,eles[TElectrons_id[1]].phi,eles[TElectrons_id[1]].mass)
           elif len(TElectrons_id)==1:
@@ -2173,8 +2176,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=FMuons_id[0]
             SR4L_z2l1_id=TElectrons_id[0]
             SR4L_z2l2_id=FElectrons_id[0]
-            l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
             l3_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
           else:
@@ -2187,8 +2190,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=FMuons_id[0]
             SR4L_z2l1_id=FElectrons_id[0]
             SR4L_z2l2_id=FElectrons_id[1]
-            l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
             l3_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[FElectrons_id[1]].pt,eles[FElectrons_id[1]].eta,eles[FElectrons_id[1]].phi,eles[FElectrons_id[1]].mass)
         else:
@@ -2202,8 +2205,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=FMuons_id[1]
             SR4L_z2l1_id=TElectrons_id[0]
             SR4L_z2l2_id=TElectrons_id[1]
-            l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[TElectrons_id[1]].pt,eles[TElectrons_id[1]].eta,eles[TElectrons_id[1]].phi,eles[TElectrons_id[1]].mass)
           elif len(TElectrons_id)==1:
@@ -2216,8 +2219,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=FMuons_id[1]
             SR4L_z2l1_id=TElectrons_id[0]
             SR4L_z2l2_id=FElectrons_id[0]
-            l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
           else:
@@ -2230,8 +2233,8 @@ class WZZProducer(Module):
             SR4L_z1l2_id=FMuons_id[1]
             SR4L_z2l1_id=FElectrons_id[0]
             SR4L_z2l2_id=FElectrons_id[1]
-            l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-            l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+            l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+            l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
             l3_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
             l4_v4.SetPtEtaPhiM(eles[FElectrons_id[1]].pt,eles[FElectrons_id[1]].eta,eles[FElectrons_id[1]].phi,eles[FElectrons_id[1]].mass)
 
@@ -2579,6 +2582,7 @@ class WZZProducer(Module):
       z1l2_v4=TLorentzVector()
       z2l1_v4=TLorentzVector()
       z2l2_v4=TLorentzVector()
+      wl_v4=TLorentzVector()
       z1_v4=TLorentzVector()
       z2_v4=TLorentzVector()
       wlv_v4=TLorentzVector()
@@ -2589,11 +2593,11 @@ class WZZProducer(Module):
 
           if not abs(chargeTot_tmp)==1:return False
           SR_5L_FakeBit=31
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[TMuons_id[3]].pt,muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
-          l5_v4.SetPtEtaPhiM(muons[TMuons_id[4]].pt,muons[TMuons_id[4]].eta,muons[TMuons_id[4]].phi,muons[TMuons_id[4]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[3]],muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
+          l5_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[4]],muons[TMuons_id[4]].eta,muons[TMuons_id[4]].phi,muons[TMuons_id[4]].mass)
 
           l1_all=Particle(p4=l1_v4, Id=TMuons_id[0], charge=muons[TMuons_id[0]].charge)
           l2_all=Particle(p4=l2_v4, Id=TMuons_id[1], charge=muons[TMuons_id[1]].charge)
@@ -2609,11 +2613,11 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[TMuons_id[3]].charge+muons[FMuons_id[0]].charge
 
           if not abs(chargeTot_tmp)==1:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[TMuons_id[3]].pt,muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
-          l5_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[3]],muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
+          l5_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
 
           l1_all=Particle(p4=l1_v4, Id=TMuons_id[0], charge=muons[TMuons_id[0]].charge)
           l2_all=Particle(p4=l2_v4, Id=TMuons_id[1], charge=muons[TMuons_id[1]].charge)
@@ -2632,11 +2636,11 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge
 
           if not abs(chargeTot_tmp)==1:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l5_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l5_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
 
           l1_all=Particle(p4=l1_v4, Id=TMuons_id[0], charge=muons[TMuons_id[0]].charge)
           l2_all=Particle(p4=l2_v4, Id=TMuons_id[1], charge=muons[TMuons_id[1]].charge)
@@ -2656,11 +2660,11 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge+muons[FMuons_id[2]].charge
 
           if not abs(chargeTot_tmp)==1:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
-          l5_v4.SetPtEtaPhiM(muons[FMuons_id[2]].pt,muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l5_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[2]],muons[FMuons_id[2]].eta,muons[FMuons_id[2]].phi,muons[FMuons_id[2]].mass)
 
           l1_all=Particle(p4=l1_v4, Id=TMuons_id[0], charge=muons[TMuons_id[0]].charge)
           l2_all=Particle(p4=l2_v4, Id=TMuons_id[1], charge=muons[TMuons_id[1]].charge)
@@ -2738,10 +2742,10 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[TMuons_id[3]].charge
 
           if not abs(chargeTot_tmp)==0:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[TMuons_id[3]].pt,muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[3]],muons[TMuons_id[3]].eta,muons[TMuons_id[3]].phi,muons[TMuons_id[3]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR5L_z1l1_id,SR5L_z1l2_id,SR5L_z2l1_id,SR5L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[TMuons_id[2]].charge,muons[TMuons_id[3]].charge,TMuons_id[0],TMuons_id[1],TMuons_id[2],TMuons_id[3])
           if len(TElectrons_id)==1:
             SR_5L_FakeBit=31
@@ -2756,10 +2760,10 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[FMuons_id[0]].charge
 
           if not abs(chargeTot_tmp)==0:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR5L_z1l1_id,SR5L_z1l2_id,SR5L_z2l1_id,SR5L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[TMuons_id[2]].charge,muons[FMuons_id[0]].charge,TMuons_id[0],TMuons_id[1],TMuons_id[2],FMuons_id[0])
           id_tmp=[SR5L_z2l2_id,SR5L_z2l1_id,SR5L_z1l2_id,SR5L_z1l1_id]
           fake_index=id_tmp.index(FMuons_id[0])
@@ -2777,10 +2781,10 @@ class WZZProducer(Module):
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge
 
           if not abs(chargeTot_tmp)==0:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l4_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l4_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
           z1l1_v4,z1l2_v4,z2l1_v4,z2l2_v4,SR5L_z1l1_id,SR5L_z1l2_id,SR5L_z2l1_id,SR5L_z2l2_id=assign_4lep(l1_v4,l2_v4,l3_v4,l4_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[FMuons_id[0]].charge,muons[FMuons_id[1]].charge,TMuons_id[0],TMuons_id[1],FMuons_id[0],FMuons_id[1])
           id_tmp=[SR5L_z2l2_id,SR5L_z2l1_id,SR5L_z1l2_id,SR5L_z1l1_id]
           fake_index1=id_tmp.index(FMuons_id[0])
@@ -2850,9 +2854,9 @@ class WZZProducer(Module):
         if len(TMuons_id)==3:
           chargeTotmu_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge
           if not abs(chargeTotmu_tmp)==1:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[TMuons_id[2]].pt,muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[2]],muons[TMuons_id[2]].eta,muons[TMuons_id[2]].phi,muons[TMuons_id[2]].mass)
           z1l1_v4,z1l2_v4,wl_v4,SR5L_z1l1_id,SR5L_z1l2_id,SR5L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[TMuons_id[2]].charge,TMuons_id[0],TMuons_id[1],TMuons_id[2])
 
           if len(TElectrons_id)==2:
@@ -2883,9 +2887,9 @@ class WZZProducer(Module):
         elif len(TMuons_id)==2:
           chargeTotmu_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[FMuons_id[0]].charge
           if not abs(chargeTotmu_tmp)==1:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
           z1l1_v4,z1l2_v4,wl_v4,SR5L_z1l1_id,SR5L_z1l2_id,SR5L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[TMuons_id[1]].charge,muons[FMuons_id[0]].charge,TMuons_id[0],TMuons_id[1],FMuons_id[0])
           id_tmp=[SR5L_wl_id,9,10,SR5L_z1l2_id,SR5L_z1l1_id]
           fake_index=id_tmp.index(FMuons_id[0])
@@ -2911,9 +2915,9 @@ class WZZProducer(Module):
         elif len(TMuons_id)==1:
           chargeTotmu_tmp=muons[TMuons_id[0]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge
           if not abs(chargeTotmu_tmp)==1:return False
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l3_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l3_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
           z1l1_v4,z1l2_v4,wl_v4,SR5L_z1l1_id,SR5L_z1l2_id,SR5L_wl_id=assign_3lep(l1_v4,l2_v4,l3_v4,muons[TMuons_id[0]].charge,muons[FMuons_id[0]].charge,muons[FMuons_id[1]].charge,TMuons_id[0],FMuons_id[0],FMuons_id[1])
           id_tmp=[SR5L_wl_id,9,10,SR5L_z1l2_id,SR5L_z1l1_id]
           real_index=id_tmp.index(TMuons_id[0])
@@ -2924,9 +2928,9 @@ class WZZProducer(Module):
             if not abs(chargeTotele_tmp)==0:return False
             SR_5L_FakeBit=SR_5L_FakeBit_+12
             SR5L_z2l1_id=TElectrons_id[0]
-            SR5L_z2l2_id=FElectrons_id[0]
+            SR5L_z2l2_id=TElectrons_id[1]
             l4_v4.SetPtEtaPhiM(eles[TElectrons_id[0]].pt,eles[TElectrons_id[0]].eta,eles[TElectrons_id[0]].phi,eles[TElectrons_id[0]].mass)
-            l5_v4.SetPtEtaPhiM(eles[FElectrons_id[0]].pt,eles[FElectrons_id[0]].eta,eles[FElectrons_id[0]].phi,eles[FElectrons_id[0]].mass)
+            l5_v4.SetPtEtaPhiM(eles[TElectrons_id[1]].pt,eles[TElectrons_id[1]].eta,eles[TElectrons_id[1]].phi,eles[TElectrons_id[1]].mass)
 
         SR5L_z1l1_pt=z1l1_v4.Pt()
         SR5L_z1l1_eta=z1l1_v4.Eta()
@@ -2985,8 +2989,8 @@ class WZZProducer(Module):
           if not abs(chargeTotmu_tmp)==0:return False
           SR5L_z1l1_id=TMuons_id[0]
           SR5L_z1l2_id=TMuons_id[1]
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[TMuons_id[1]].pt,muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[1]],muons[TMuons_id[1]].eta,muons[TMuons_id[1]].phi,muons[TMuons_id[1]].mass)
           if len(TElectrons_id)==3:
             chargeTotele_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[TElectrons_id[2]].charge
             if not abs(chargeTotele_tmp)==1:return False
@@ -3021,8 +3025,8 @@ class WZZProducer(Module):
           if not abs(chargeTotmu_tmp)==0:return False
           SR5L_z1l1_id=TMuons_id[0]
           SR5L_z1l2_id=FMuons_id[0]
-          l1_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
           if len(TElectrons_id)==3:
             chargeTotele_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[TElectrons_id[2]].charge
             if not abs(chargeTotele_tmp)==1:return False
@@ -3047,8 +3051,8 @@ class WZZProducer(Module):
           if not abs(chargeTotmu_tmp)==0:return False
           SR5L_z1l1_id=FMuons_id[0]
           SR5L_z1l2_id=FMuons_id[1]
-          l1_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
-          l2_v4.SetPtEtaPhiM(muons[FMuons_id[1]].pt,muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
+          l1_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l2_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[1]],muons[FMuons_id[1]].eta,muons[FMuons_id[1]].phi,muons[FMuons_id[1]].mass)
           if len(TElectrons_id)==3:
             chargeTotele_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[TElectrons_id[2]].charge
             if not abs(chargeTotele_tmp)==1:return False
@@ -3112,7 +3116,7 @@ class WZZProducer(Module):
         SR_5L_FlavorBit=57
         if len(TMuons_id)==1:
           SR5L_wl_id=TMuons_id[0]
-          l5_v4.SetPtEtaPhiM(muons[TMuons_id[0]].pt,muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
+          l5_v4.SetPtEtaPhiM(event.Muon_corrected_pt[TMuons_id[0]],muons[TMuons_id[0]].eta,muons[TMuons_id[0]].phi,muons[TMuons_id[0]].mass)
           if len(TElectrons_id)==4:
             chargeTot_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[TElectrons_id[2]].charge+eles[TElectrons_id[3]].charge
             if not abs(chargeTot_tmp)==0:return False
@@ -3147,7 +3151,7 @@ class WZZProducer(Module):
             SR_5L_FakeBit=31 - (1<<(4-fake_index1)) - (1<<(4-fake_index2))
         else:
           SR5L_wl_id=FMuons_id[0]
-          l5_v4.SetPtEtaPhiM(muons[FMuons_id[0]].pt,muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
+          l5_v4.SetPtEtaPhiM(event.Muon_corrected_pt[FMuons_id[0]],muons[FMuons_id[0]].eta,muons[FMuons_id[0]].phi,muons[FMuons_id[0]].mass)
           if len(TElectrons_id)==4:
             chargeTot_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[TElectrons_id[2]].charge+eles[TElectrons_id[3]].charge
             if not abs(chargeTot_tmp)==0:return False
