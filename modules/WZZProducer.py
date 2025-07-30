@@ -122,7 +122,7 @@ def w_v4(lep_v4, MET, MET_phi):
   C=4*El*El*MET*MET - a*a
   tmproot = B * B - 4.0 * A * C
   if A==0:
-    pzv=0.
+    pzv = 0.
   else:
     if tmproot<0:
       pzv = -B / (2 * A)
@@ -2609,6 +2609,61 @@ class WZZProducer(Module):
           z2l1,z2l2 = best_comb['Z2']
           wl = best_comb['W']
 
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
+
         elif len(TMuons_id)==4:
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[TMuons_id[3]].charge+muons[FMuons_id[0]].charge
 
@@ -2631,6 +2686,61 @@ class WZZProducer(Module):
           id_tmp=[wl.Id,z2l2.Id,z2l1.Id,z1l2.Id,z1l1.Id]
           fake_index1=id_tmp.index(FMuons_id[0])
           SR_5L_FakeBit=31 - (1<<(4-fake_index1))
+
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
 
         elif len(TMuons_id)==3:
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[TMuons_id[2]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge
@@ -2655,6 +2765,61 @@ class WZZProducer(Module):
           fake_index1=id_tmp.index(FMuons_id[0])
           fake_index2=id_tmp.index(FMuons_id[1])
           SR_5L_FakeBit=31 - (1<<(4-fake_index1)) - (1<<(4-fake_index2))
+
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
 
         elif len(TMuons_id)==2:
           chargeTot_tmp=muons[TMuons_id[0]].charge+muons[TMuons_id[1]].charge+muons[FMuons_id[0]].charge+muons[FMuons_id[1]].charge+muons[FMuons_id[2]].charge
@@ -2681,60 +2846,60 @@ class WZZProducer(Module):
           fake_index3=id_tmp.index(FMuons_id[2])
           SR_5L_FakeBit=31 - (1<<(4-fake_index1)) - (1<<(4-fake_index2)) - (1<<(4-fake_index3))
 
-        SR5L_z1l1_id=z1l1.Id
-        SR5L_z1l2_id=z1l2.Id
-        SR5L_z2l1_id=z2l1.Id
-        SR5L_z2l2_id=z2l2.Id
-        SR5L_wl_id=wl.Id
-        SR5L_z1l1_pt=z1l1.p4.Pt()
-        SR5L_z1l1_eta=z1l1.p4.Eta()
-        SR5L_z1l1_phi=z1l1.p4.Phi()
-        SR5L_z1l1_mass=z1l1.p4.M()
-        SR5L_z1l2_pt=z1l2.p4.Pt()
-        SR5L_z1l2_eta=z1l2.p4.Eta()
-        SR5L_z1l2_phi=z1l2.p4.Phi()
-        SR5L_z1l2_mass=z1l2.p4.M()
-        SR5L_z2l1_pt=z2l1.p4.Pt()
-        SR5L_z2l1_eta=z2l1.p4.Eta()
-        SR5L_z2l1_phi=z2l1.p4.Phi()
-        SR5L_z2l1_mass=z2l1.p4.M()
-        SR5L_z2l2_pt=z2l2.p4.Pt()
-        SR5L_z2l2_eta=z2l2.p4.Eta()
-        SR5L_z2l2_phi=z2l2.p4.Phi()
-        SR5L_z2l2_mass=z2l2.p4.M()
-        SR5L_wl_pt=wl.p4.Pt()
-        SR5L_wl_eta=wl.p4.Eta()
-        SR5L_wl_phi=wl.p4.Phi()
-        SR5L_wl_mass=wl.p4.M()
-        
-        SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
-        SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
-        SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
-        SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
-        SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
-        SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
-        SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
-        SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
-        SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
-        SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
-
-        z1_v4=z1l1.p4+z1l2.p4
-        z2_v4=z2l1.p4+z2l2.p4
-        #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
-        wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
-
-        SR5L_z1_pt=z1_v4.Pt()
-        SR5L_z1_eta=z1_v4.Eta()
-        SR5L_z1_phi=z1_v4.Phi()
-        SR5L_z1_mass=z1_v4.M()
-        SR5L_z2_pt=z2_v4.Pt()
-        SR5L_z2_eta=z2_v4.Eta()
-        SR5L_z2_phi=z2_v4.Phi()
-        SR5L_z2_mass=z2_v4.M()
-        SR5L_w_pt=wlv_v4.Pt()
-        SR5L_w_eta=wlv_v4.Eta()
-        SR5L_w_phi=wlv_v4.Phi()
-        SR5L_w_mass=wlv_v4.M()
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+  
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+  
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
 
       elif len(TFMuons_id)==4:
         SR_5L_FlavorBit=63
@@ -3246,6 +3411,61 @@ class WZZProducer(Module):
           z2l1,z2l2 = best_comb['Z2']
           wl = best_comb['W']
 
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
+
         elif len(TElectrons_id)==4:
           chargeTot_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[TElectrons_id[2]].charge+eles[TElectrons_id[3]].charge+eles[FElectrons_id[0]].charge
 
@@ -3268,6 +3488,61 @@ class WZZProducer(Module):
           id_tmp=[wl.Id,z2l2.Id,z2l1.Id,z1l2.Id,z1l1.Id]
           fake_index1=id_tmp.index(FElectrons_id[0])
           SR_5L_FakeBit=31 - (1<<(4-fake_index1))
+
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
 
         elif len(TElectrons_id)==3:
           chargeTot_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[TElectrons_id[2]].charge+eles[FElectrons_id[0]].charge+eles[FElectrons_id[1]].charge
@@ -3292,6 +3567,61 @@ class WZZProducer(Module):
           fake_index1=id_tmp.index(FElectrons_id[0])
           fake_index2=id_tmp.index(FElectrons_id[1])
           SR_5L_FakeBit=31 - (1<<(4-fake_index1)) - (1<<(4-fake_index2))
+
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
 
         elif len(TElectrons_id)==2:
           chargeTot_tmp=eles[TElectrons_id[0]].charge+eles[TElectrons_id[1]].charge+eles[FElectrons_id[0]].charge+eles[FElectrons_id[1]].charge+eles[FElectrons_id[2]].charge
@@ -3318,60 +3648,60 @@ class WZZProducer(Module):
           fake_index3=id_tmp.index(FElectrons_id[2])
           SR_5L_FakeBit=31 - (1<<(4-fake_index1)) - (1<<(4-fake_index2)) - (1<<(4-fake_index3))
 
-        SR5L_z1l1_id=z1l1.Id
-        SR5L_z1l2_id=z1l2.Id
-        SR5L_z2l1_id=z2l1.Id
-        SR5L_z2l2_id=z2l2.Id
-        SR5L_wl_id=wl.Id
-        SR5L_z1l1_pt=z1l1.p4.Pt()
-        SR5L_z1l1_eta=z1l1.p4.Eta()
-        SR5L_z1l1_phi=z1l1.p4.Phi()
-        SR5L_z1l1_mass=z1l1.p4.M()
-        SR5L_z1l2_pt=z1l2.p4.Pt()
-        SR5L_z1l2_eta=z1l2.p4.Eta()
-        SR5L_z1l2_phi=z1l2.p4.Phi()
-        SR5L_z1l2_mass=z1l2.p4.M()
-        SR5L_z2l1_pt=z2l1.p4.Pt()
-        SR5L_z2l1_eta=z2l1.p4.Eta()
-        SR5L_z2l1_phi=z2l1.p4.Phi()
-        SR5L_z2l1_mass=z2l1.p4.M()
-        SR5L_z2l2_pt=z2l2.p4.Pt()
-        SR5L_z2l2_eta=z2l2.p4.Eta()
-        SR5L_z2l2_phi=z2l2.p4.Phi()
-        SR5L_z2l2_mass=z2l2.p4.M()
-        SR5L_wl_pt=wl.p4.Pt()
-        SR5L_wl_eta=wl.p4.Eta()
-        SR5L_wl_phi=wl.p4.Phi()
-        SR5L_wl_mass=wl.p4.M()
-        
-        SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
-        SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
-        SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
-        SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
-        SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
-        SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
-        SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
-        SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
-        SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
-        SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
+          SR5L_z1l1_id=z1l1.Id
+          SR5L_z1l2_id=z1l2.Id
+          SR5L_z2l1_id=z2l1.Id
+          SR5L_z2l2_id=z2l2.Id
+          SR5L_wl_id=wl.Id
+          SR5L_z1l1_pt=z1l1.p4.Pt()
+          SR5L_z1l1_eta=z1l1.p4.Eta()
+          SR5L_z1l1_phi=z1l1.p4.Phi()
+          SR5L_z1l1_mass=z1l1.p4.M()
+          SR5L_z1l2_pt=z1l2.p4.Pt()
+          SR5L_z1l2_eta=z1l2.p4.Eta()
+          SR5L_z1l2_phi=z1l2.p4.Phi()
+          SR5L_z1l2_mass=z1l2.p4.M()
+          SR5L_z2l1_pt=z2l1.p4.Pt()
+          SR5L_z2l1_eta=z2l1.p4.Eta()
+          SR5L_z2l1_phi=z2l1.p4.Phi()
+          SR5L_z2l1_mass=z2l1.p4.M()
+          SR5L_z2l2_pt=z2l2.p4.Pt()
+          SR5L_z2l2_eta=z2l2.p4.Eta()
+          SR5L_z2l2_phi=z2l2.p4.Phi()
+          SR5L_z2l2_mass=z2l2.p4.M()
+          SR5L_wl_pt=wl.p4.Pt()
+          SR5L_wl_eta=wl.p4.Eta()
+          SR5L_wl_phi=wl.p4.Phi()
+          SR5L_wl_mass=wl.p4.M()
+          
+          SR5L_dR_z1l1z1l2=z1l1.p4.DeltaR(z1l2.p4)
+          SR5L_dR_z1l1z2l1=z1l1.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l1z2l2=z1l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l1wl=z1l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z1l2z2l1=z1l2.p4.DeltaR(z2l1.p4)
+          SR5L_dR_z1l2z2l2=z1l2.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z1l2wl=z1l2.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l1z2l2=z2l1.p4.DeltaR(z2l2.p4)
+          SR5L_dR_z2l1wl=z2l1.p4.DeltaR(wl.p4)
+          SR5L_dR_z2l2wl=z2l2.p4.DeltaR(wl.p4)
 
-        z1_v4=z1l1.p4+z1l2.p4
-        z2_v4=z2l1.p4+z2l2.p4
-        #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
-        wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
+          z1_v4=z1l1.p4+z1l2.p4
+          z2_v4=z2l1.p4+z2l2.p4
+          #wlv_v4=w_v4(wl.p4, met_user, met_phi_user)
+          wlv_v4=w_v4(wl.p4, met_CorrePhi, met_phi_CorrePhi)
 
-        SR5L_z1_pt=z1_v4.Pt()
-        SR5L_z1_eta=z1_v4.Eta()
-        SR5L_z1_phi=z1_v4.Phi()
-        SR5L_z1_mass=z1_v4.M()
-        SR5L_z2_pt=z2_v4.Pt()
-        SR5L_z2_eta=z2_v4.Eta()
-        SR5L_z2_phi=z2_v4.Phi()
-        SR5L_z2_mass=z2_v4.M()
-        SR5L_w_pt=wlv_v4.Pt()
-        SR5L_w_eta=wlv_v4.Eta()
-        SR5L_w_phi=wlv_v4.Phi()
-        SR5L_w_mass=wlv_v4.M()
+          SR5L_z1_pt=z1_v4.Pt()
+          SR5L_z1_eta=z1_v4.Eta()
+          SR5L_z1_phi=z1_v4.Phi()
+          SR5L_z1_mass=z1_v4.M()
+          SR5L_z2_pt=z2_v4.Pt()
+          SR5L_z2_eta=z2_v4.Eta()
+          SR5L_z2_phi=z2_v4.Phi()
+          SR5L_z2_mass=z2_v4.M()
+          SR5L_w_pt=wlv_v4.Pt()
+          SR5L_w_eta=wlv_v4.Eta()
+          SR5L_w_phi=wlv_v4.Phi()
+          SR5L_w_mass=wlv_v4.M()
 
       SR5L_dR_z1_w = z1_v4.DeltaR(wlv_v4)
       SR5L_dEta_z1_w = abs(z1_v4.Eta()-wlv_v4.Eta())
